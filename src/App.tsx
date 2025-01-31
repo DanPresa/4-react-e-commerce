@@ -1,7 +1,7 @@
-import { Button } from '@mui/material';
+import RouteConfig from './routes/RouteConfig';
 
 const App = () => {
-  return <Button variant="contained">Click me</Button>;
+  return <RouteConfig />;
 };
 
 export default App;
