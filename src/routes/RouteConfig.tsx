@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router';
+import Navbar from '../components/Navbar';
 
 const RouteConfig = () => {
   return (
@@ -12,7 +13,7 @@ const RouteConfig = () => {
 
 export default RouteConfig;
 
-const Home = () => <h1>Home</h1>;
+const Home = () => <Navbar />;
 
 const About = () => <h1>About</h1>;
 
