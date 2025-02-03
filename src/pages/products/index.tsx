@@ -1,15 +1,26 @@
+import { useEffect } from 'react';
+import useCategoryActions from '../../redux/categories/useCategoryActions';
+import useProductsActions from '../../redux/products/useProductsActions';
 import { Typography, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import ProductCard from './ProducCard';
-import useProductsActions from '../../redux/products/useProductsActions';
-import { useEffect } from 'react';
 
 const ProductPage = () => {
-  const { products, fetchAllProducts } = useProductsActions();
+  const { selectedCategory } = useCategoryActions();
+  const { loading, products, fetchAllProducts, fetchProductsByCategory } =
+    useProductsActions();
 
   useEffect(() => {
-    fetchAllProducts();
-  }, [fetchAllProducts]);
+    if (selectedCategory) {
+      fetchProductsByCategory(selectedCategory);
+    } else {
+      fetchAllProducts();
+    }
+  }, [selectedCategory, fetchAllProducts, fetchProductsByCategory]);
+
+  if (loading) {
+    return <Box>Loading products...</Box>;
+  }
 
   return (
     <Box sx={{ p: 4 }}>
@@ -17,13 +28,17 @@ const ProductPage = () => {
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
         Products
       </Typography>
-      <Grid container spacing={3}>
-        {products.map((product: Product) => (
-          <Grid key={product.id} size={{ xs: 12, sm: 6, md: 3 }}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
-      </Grid>
+      {products && products.length > 0 ? (
+        <Grid container spacing={3}>
+          {products.map((product: Product) => (
+            <Grid key={product.id} size={{ xs: 12, sm: 6, md: 3 }}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography variant="body1">No products found</Typography>
+      )}
     </Box>
   );
 };

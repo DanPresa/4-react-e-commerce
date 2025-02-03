@@ -1,7 +1,12 @@
 import { formatCategories } from './../../utils/formatCategories';
 import axiosInstance from '../../config/api/axiosInstance';
 import { AppDispatch } from '../store';
-import { setCategories, setError, setLoading } from './categories.slice';
+import {
+  setCategories,
+  setError,
+  setLoading,
+  setSelectedCategory,
+} from './categories.slice';
 
 export const getCategories = () => async (dispatch: AppDispatch) => {
   dispatch(setLoading());
@@ -18,4 +23,8 @@ export const getCategories = () => async (dispatch: AppDispatch) => {
       dispatch(setError('An unknown error occurred'));
     }
   }
+};
+
+export const selectCategory = (category: string) => (dispatch: AppDispatch) => {
+  dispatch(setSelectedCategory(category));
 };

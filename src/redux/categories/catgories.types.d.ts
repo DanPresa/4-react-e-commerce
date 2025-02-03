@@ -6,5 +6,6 @@ interface Category {
 interface CategoriesState {
   loading: boolean;
   categories: Category[];
+  selectedCategory: string;
   error: string | null;
 }

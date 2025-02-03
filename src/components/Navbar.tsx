@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 
 const Navbar = () => {
-  const { categories, fetchCategories } = useCategoryActions();
+  const { categories, fetchCategories, changeCategory } = useCategoryActions();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
@@ -32,7 +32,7 @@ const Navbar = () => {
 
   // Handle category selection
   const handleCategorySelect = (category: Category) => {
-    console.log(category);
+    changeCategory(category.slug); // Change the selected category
     handleMenuClose(); // Close the menu
   };
 

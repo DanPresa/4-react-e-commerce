@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-const initialState = {
+const initialState: CategoriesState = {
   loading: false,
   categories: [],
+  selectedCategory: '',
   error: null,
 };
 
@@ -19,6 +20,9 @@ const categoriesSlice = createSlice({
       state.loading = false;
       state.categories = action.payload;
     },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
     setError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -27,5 +31,6 @@ const categoriesSlice = createSlice({
 });
 
 export const categoriesSelector = (state: RootState) => state.categories;
-export const { setLoading, setCategories, setError } = categoriesSlice.actions;
+export const { setLoading, setCategories, setSelectedCategory, setError } =
+  categoriesSlice.actions;
 export default categoriesSlice.reducer;

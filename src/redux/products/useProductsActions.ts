@@ -1,7 +1,7 @@
+import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { productsSelector } from './products.slice';
-import { getAllProducts } from './products.actions';
-import { useCallback } from 'react';
+import { getAllProducts, getProductsByCategory } from './products.actions';
 
 const useProductsActions = () => {
   const dispatch = useAppDispatch();
@@ -11,7 +11,20 @@ const useProductsActions = () => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
-  return { loading, products, error, fetchAllProducts };
+  const fetchProductsByCategory = useCallback(
+    (slug: string) => {
+      dispatch(getProductsByCategory(slug));
+    },
+    [dispatch]
+  );
+
+  return {
+    loading,
+    products,
+    error,
+    fetchAllProducts,
+    fetchProductsByCategory,
+  };
 };
 
 export default useProductsActions;
