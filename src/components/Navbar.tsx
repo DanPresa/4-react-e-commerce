@@ -1,6 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
+import { useMatch, useNavigate } from 'react-router';
 import useCategoryActions from '../redux/categories/useCategoryActions';
-import { useMatch } from 'react-router';
+import useFavoritesActions from '../redux/favorites/useFavoritesActions';
 import {
   AppBar,
   Toolbar,
@@ -15,14 +16,24 @@ import {
 import {
   ShoppingBag,
   AccountCircle,
+  FavoriteBorderOutlined,
+  Favorite,
   ExpandMore,
   GridView,
 } from '@mui/icons-material';
 
 const Navbar = () => {
-  const isHome = useMatch('/');
   const { categories, fetchCategories, changeCategory } = useCategoryActions();
+  const { favorites } = useFavoritesActions();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isHome = useMatch('/');
+  const navigation = useNavigate();
+
+  const handleGotToFavoritesClick = () => {
+    navigation('/favorites');
+  };
+
+  const isThereFavorites = favorites.length > 0;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -92,9 +103,16 @@ const Navbar = () => {
         {/* Categories Button */}
 
         {/* Right Icons */}
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <IconButton>
             <AccountCircle fontSize="medium" />
+          </IconButton>
+          <IconButton onClick={handleGotToFavoritesClick}>
+            {isThereFavorites ? (
+              <Favorite fontSize="medium" color="error" />
+            ) : (
+              <FavoriteBorderOutlined fontSize="medium" />
+            )}
           </IconButton>
           <IconButton>
             <Badge badgeContent={3} color="error">

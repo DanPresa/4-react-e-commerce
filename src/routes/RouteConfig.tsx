@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router';
 import MainLayout from '../layouts/MainLayout';
 import ProductPage from '../pages/products';
 import ProductDetails from '../pages/products/ProductDetails';
+import FavoritesPage from '../pages/favorites';
 
 const RouteConfig = () => {
   return (
@@ -12,6 +13,7 @@ const RouteConfig = () => {
           path="/product-details/:productId/:productTitle"
           element={<ProductDetails />}
         />
+        <Route path="/favorites" element={<FavoritesPage />} />
       </Route>
     </Routes>
   );

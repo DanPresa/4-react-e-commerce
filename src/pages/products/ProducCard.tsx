@@ -10,8 +10,9 @@ import {
   IconButton,
   Rating,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { formatTitle } from '../../utils/formatCategories';
+import useFavoritesActions from '../../redux/favorites/useFavoritesActions';
 
 // Product Interface
 interface ProductProps {
@@ -21,6 +22,13 @@ interface ProductProps {
 // Reusable Product Card Component
 const ProductCard: FC<ProductProps> = ({ product }) => {
   const navigate = useNavigate();
+  const { favorites, addProductToFavorite } = useFavoritesActions();
+
+  const isfavorite = favorites.some((prod: Product) => prod.id === product.id);
+
+  const handleAddToFavoritesClick = () => {
+    addProductToFavorite(product);
+  };
 
   const handleProductDetailsClick = () => {
     const productTitle = formatTitle(product.title);
@@ -39,8 +47,11 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
       }}
     >
       {/* Wishlist Icon */}
-      <IconButton sx={{ position: 'absolute', top: 10, right: 10 }}>
-        <FavoriteBorderIcon />
+      <IconButton
+        sx={{ position: 'absolute', top: 10, right: 10 }}
+        onClick={handleAddToFavoritesClick}
+      >
+        {isfavorite ? <Favorite color="error" /> : <FavoriteBorder />}
       </IconButton>
 
       {/* Product Image */}
