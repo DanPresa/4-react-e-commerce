@@ -1,11 +1,11 @@
 import { MouseEvent, useState } from 'react';
+import useCategoryActions from '../redux/categories/useCategoryActions';
 import {
   AppBar,
   Toolbar,
   IconButton,
   Menu,
   MenuItem,
-  ListItemIcon,
   ListItemText,
   Badge,
   Box,
@@ -18,22 +18,8 @@ import {
   GridView,
 } from '@mui/icons-material';
 
-// Category List with Icons
-const categories = [
-  { name: 'Fashion', icon: '👕' },
-  { name: 'Electronics', icon: '🔌' },
-  { name: 'Bikes', icon: '🚴' },
-  { name: 'Home & Garden', icon: '🏡' },
-  { name: 'Gifts', icon: '🎁' },
-  { name: 'Music', icon: '🎵' },
-  { name: 'Health & Beauty', icon: '💄' },
-  { name: 'Pets', icon: '🐾' },
-  { name: 'Baby Toys', icon: '🧸' },
-  { name: 'Groceries', icon: '🛒' },
-  { name: 'Automotive', icon: '🚗' },
-];
-
 const Navbar = () => {
+  const { categories } = useCategoryActions();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
@@ -42,6 +28,12 @@ const Navbar = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  // Handle category selection
+  const handleCategorySelect = (category: Category) => {
+    console.log(category);
+    handleMenuClose(); // Close the menu
   };
 
   return (
@@ -74,9 +66,11 @@ const Navbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {categories.map((category) => (
-            <MenuItem key={category.name} onClick={handleMenuClose}>
-              <ListItemIcon>{category.icon}</ListItemIcon>
+          {categories.map((category: Category) => (
+            <MenuItem
+              key={category.slug}
+              onClick={() => handleCategorySelect(category)}
+            >
               <ListItemText primary={category.name} />
             </MenuItem>
           ))}
