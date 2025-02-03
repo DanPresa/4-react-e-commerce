@@ -11,19 +11,13 @@ import {
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-// Product Data Type
-type Product = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  rating: number;
-  image: string;
-};
+// Product Interface
+interface ProductProps {
+  product: Product;
+}
 
 // Reusable Product Card Component
-const ProductCard: FC<{ product: Product }> = ({ product }) => (
+const ProductCard: FC<ProductProps> = ({ product }) => (
   <Card
     sx={{
       p: 2,
@@ -42,38 +36,53 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => (
     <CardMedia
       component="img"
       height="160"
-      image={product.image}
-      alt={product.name}
+      image={product.thumbnail}
+      alt={product.title}
     />
 
     <CardContent sx={{ textAlign: 'left' }}>
       {/* Product Name */}
       <Typography variant="h6" fontWeight="bold">
-        {product.name}
+        {product.title}
       </Typography>
 
       {/* Description */}
       <Typography variant="body2" color="text.secondary">
-        {product.description}
+        {product.description.slice(0, 100)}...{' '}
+        <Typography
+          component="span"
+          variant="body2"
+          color="primary"
+          sx={{ cursor: 'pointer' }}
+        >
+          Read More
+        </Typography>
       </Typography>
 
       {/* Price */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
         <Typography variant="h6" sx={{ color: 'black', fontWeight: 'bold' }}>
-          ${product.price.toFixed(2)}
+          ${product.discountPercentage.toFixed(2)}
         </Typography>
-        {product.oldPrice && (
+        {product.price && (
           <Typography
             variant="body2"
             sx={{ textDecoration: 'line-through', color: 'gray' }}
           >
-            ${product.oldPrice.toFixed(2)}
+            ${product.price.toFixed(2)}
           </Typography>
         )}
       </Box>
 
       {/* Rating */}
-      <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}
+      >
         <Rating
           value={product.rating}
           precision={0.1}
@@ -81,6 +90,18 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => (
           size="small"
           sx={{ mt: 1 }}
         />
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {product.reviews.length} reviews
+        </Typography>
+      </Box>
+
+      <Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          Brand: {product.brand ?? 'N/A'}
+        </Typography>
+        <Typography variant="subtitle2" color="text.secondary">
+          Category: {product.category}
+        </Typography>
       </Box>
 
       {/* Add to Cart Button */}

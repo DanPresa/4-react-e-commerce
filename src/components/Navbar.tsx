@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import useCategoryActions from '../redux/categories/useCategoryActions';
 import {
   AppBar,
@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 
 const Navbar = () => {
-  const { categories } = useCategoryActions();
+  const { categories, fetchCategories } = useCategoryActions();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
@@ -35,6 +35,10 @@ const Navbar = () => {
     console.log(category);
     handleMenuClose(); // Close the menu
   };
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   return (
     <AppBar
