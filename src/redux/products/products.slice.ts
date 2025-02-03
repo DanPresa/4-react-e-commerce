@@ -4,6 +4,7 @@ import { RootState } from '../store';
 const initialState: ProductsState = {
   loading: false,
   products: [],
+  product: null,
   total: 0,
   skip: 0,
   limit: 0,
@@ -27,6 +28,10 @@ const productSlice = createSlice({
       state.skip = skip;
       state.limit = limit;
     },
+    setProduct: (state, action) => {
+      state.loading = false;
+      state.product = action.payload;
+    },
     setError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -35,5 +40,6 @@ const productSlice = createSlice({
 });
 
 export const productsSelector = (state: RootState) => state.products;
-export const { setLoading, setProducts, setError } = productSlice.actions;
+export const { setLoading, setProducts, setProduct, setError } =
+  productSlice.actions;
 export default productSlice.reducer;

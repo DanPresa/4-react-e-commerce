@@ -8,7 +8,10 @@ const RouteConfig = () => {
     <Routes>
       <Route element={<MainLayout />}>
         <Route index element={<ProductPage />} />
-        <Route path="/product-details" element={<ProductDetails />} />
+        <Route
+          path="/product-details/:productId/:productTitle"
+          element={<ProductDetails />}
+        />
       </Route>
     </Routes>
   );

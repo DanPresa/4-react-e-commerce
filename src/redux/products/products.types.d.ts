@@ -1,7 +1,20 @@
+interface Dimensions {
+  width: number;
+  height: number;
+  depth: number;
+}
+
+interface Meta {
+  createdAt: Date;
+  updatedAt: Date;
+  barcode: string;
+  qrCode: string;
+}
+
 interface Review {
   rating: number;
   comment: string;
-  date: string;
+  date: Date;
   reviewerName: string;
   reviewerEmail: string;
 }
@@ -17,8 +30,16 @@ interface Product {
   stock: number;
   tags: string[];
   brand: string;
+  sku: string;
+  weight: number;
+  dimensions: Dimensions;
+  warrantyInformation: string;
+  shippingInformation: string;
   availabilityStatus: string;
   reviews: Review[];
+  returnPolicy: string;
+  minimumOrderQuantity: number;
+  meta: Meta;
   images: string[];
   thumbnail: string;
 }
@@ -35,5 +56,6 @@ type ProductWithTotal = Omit<ProductData, 'products'>;
 interface ProductsState extends ProductWithTotal {
   loading: boolean;
   products: Product[];
+  product: Product | null;
   error: string | null;
 }

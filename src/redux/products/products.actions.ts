@@ -1,6 +1,11 @@
 import axiosInstance from '../../config/api/axiosInstance';
 import { AppDispatch } from '../store';
-import { setError, setLoading, setProducts } from './products.slice';
+import {
+  setError,
+  setLoading,
+  setProduct,
+  setProducts,
+} from './products.slice';
 
 export const getAllProducts = () => async (dispatch: AppDispatch) => {
   dispatch(setLoading());
@@ -28,6 +33,25 @@ export const getProductsByCategory =
       );
 
       dispatch(setProducts(data));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setError(error.message));
+      } else {
+        dispatch(setError(error));
+      }
+    }
+  };
+
+export const getProductById =
+  (productId: string) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading());
+
+    try {
+      const { data } = await axiosInstance.get<Product>(
+        `/products/${productId}`
+      );
+
+      dispatch(setProduct(data));
     } catch (error) {
       if (error instanceof Error) {
         dispatch(setError(error.message));

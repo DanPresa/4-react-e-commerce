@@ -1,5 +1,6 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import useCategoryActions from '../redux/categories/useCategoryActions';
+import { useMatch } from 'react-router';
 import {
   AppBar,
   Toolbar,
@@ -19,6 +20,7 @@ import {
 } from '@mui/icons-material';
 
 const Navbar = () => {
+  const isHome = useMatch('/');
   const { categories, fetchCategories, changeCategory } = useCategoryActions();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -47,38 +49,47 @@ const Navbar = () => {
       elevation={0}
       sx={{ borderBottom: 1, borderColor: 'divider' }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
-        {/* Categories Button */}
-        <Button
-          onClick={handleMenuOpen}
-          startIcon={<GridView sx={{ color: 'red' }} />}
-          endIcon={<ExpandMore />}
-          sx={{
-            backgroundColor: '#f8f9fa',
-            borderRadius: 2,
-            textTransform: 'none',
-            fontWeight: 'bold',
-            px: 2,
-          }}
-        >
-          Categories
-        </Button>
-
-        {/* Dropdown Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          {categories.map((category: Category) => (
-            <MenuItem
-              key={category.slug}
-              onClick={() => handleCategorySelect(category)}
+      <Toolbar
+        sx={{
+          display: 'flex',
+          justifyContent: isHome ? 'space-between' : 'flex-end',
+        }}
+      >
+        {isHome && (
+          <>
+            <Button
+              onClick={handleMenuOpen}
+              startIcon={<GridView sx={{ color: 'red' }} />}
+              endIcon={<ExpandMore />}
+              sx={{
+                backgroundColor: '#f8f9fa',
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: 'bold',
+                px: 2,
+              }}
             >
-              <ListItemText primary={category.name} />
-            </MenuItem>
-          ))}
-        </Menu>
+              Categories
+            </Button>
+
+            {/* Dropdown Menu */}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {categories.map((category: Category) => (
+                <MenuItem
+                  key={category.slug}
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  <ListItemText primary={category.name} />
+                </MenuItem>
+              ))}
+            </Menu>
+          </>
+        )}
+        {/* Categories Button */}
 
         {/* Right Icons */}
         <Box sx={{ display: 'flex' }}>
