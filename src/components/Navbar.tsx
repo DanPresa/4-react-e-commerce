@@ -2,6 +2,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router';
 import useCategoryActions from '../redux/categories/useCategoryActions';
 import useFavoritesActions from '../redux/favorites/useFavoritesActions';
+import useCartActions from '../redux/cart/useCartActions';
 import {
   AppBar,
   Toolbar,
@@ -21,19 +22,16 @@ import {
   ExpandMore,
   GridView,
 } from '@mui/icons-material';
+import CartDrawer from './CartDrawer';
 
 const Navbar = () => {
   const { categories, fetchCategories, changeCategory } = useCategoryActions();
   const { favorites } = useFavoritesActions();
+  const { products } = useCartActions();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isHome = useMatch('/');
   const navigation = useNavigate();
-
-  const handleGotToFavoritesClick = () => {
-    navigation('/favorites');
-  };
-
-  const isThereFavorites = favorites.length > 0;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,10 +41,20 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const handleGotToFavoritesClick = () => {
+    navigation('/favorites');
+  };
+
+  const isThereFavorites = favorites.length > 0;
+
   // Handle category selection
   const handleCategorySelect = (category: Category) => {
     changeCategory(category.slug); // Change the selected category
     handleMenuClose(); // Close the menu
+  };
+
+  const handleGoToCartClick = () => {
+    navigation('/cart');
   };
 
   useEffect(() => {
@@ -114,11 +122,14 @@ const Navbar = () => {
               <FavoriteBorderOutlined fontSize="medium" />
             )}
           </IconButton>
-          <IconButton>
-            <Badge badgeContent={3} color="error">
+          <IconButton onClick={handleGoToCartClick}>
+            <Badge badgeContent={products.length} color="error">
               <ShoppingBag fontSize="medium" />
             </Badge>
           </IconButton>
+
+          {/* Cart Drawer */}
+          <CartDrawer />
         </Box>
       </Toolbar>
     </AppBar>

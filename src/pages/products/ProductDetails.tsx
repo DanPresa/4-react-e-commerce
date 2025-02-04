@@ -19,15 +19,21 @@ import {
   Replay,
 } from '@mui/icons-material';
 import Rating from '@mui/material/Rating';
-import { pricePerMonth } from '../../utils/formatCategories';
+import { formatPrice, pricePerMonth } from '../../utils/formatCategories';
+import useCartActions from '../../redux/cart/useCartActions';
 
 const ProductDetails = () => {
   const { product, fetchProductById } = useProductsActions();
+  const { addProduct } = useCartActions();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   const navigate = useNavigate();
   const { productId } = useParams();
+
+  const handleAddProductToCartClick = (product: Product) => {
+    addProduct(product);
+  };
 
   useEffect(() => {
     if (!productId) return;
@@ -56,7 +62,7 @@ const ProductDetails = () => {
           <Card sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
             <CardMedia
               component="img"
-              image={selectedImage || product.thumbnail}
+              image={selectedImage || product.images[0]}
               alt="Product"
               sx={{ maxWidth: '100%', borderRadius: 2 }}
             />
@@ -105,7 +111,7 @@ const ProductDetails = () => {
 
           {/* Price */}
           <Typography variant="h5" sx={{ mt: 2 }}>
-            ${product.price.toFixed(2)}{' '}
+            {formatPrice(product.price)}{' '}
             <Typography component="span" variant="body2" color="text.secondary">
               or ${pricePerMonth(product.price, 12)}/month
             </Typography>
@@ -149,6 +155,7 @@ const ProductDetails = () => {
             <Button
               variant="outlined"
               sx={{ flex: 1, p: 1.5, fontWeight: 'bold' }}
+              onClick={() => handleAddProductToCartClick(product)}
             >
               Add to Cart
             </Button>

@@ -1,5 +1,8 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router';
+import useFavoritesActions from '../../redux/favorites/useFavoritesActions';
+import useCartActions from '../../redux/cart/useCartActions';
+import { formatPrice, formatTitle } from '../../utils/formatCategories';
 import {
   Card,
   CardMedia,
@@ -11,8 +14,6 @@ import {
   Rating,
 } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { formatTitle } from '../../utils/formatCategories';
-import useFavoritesActions from '../../redux/favorites/useFavoritesActions';
 
 // Product Interface
 interface ProductProps {
@@ -23,6 +24,7 @@ interface ProductProps {
 const ProductCard: FC<ProductProps> = ({ product }) => {
   const navigate = useNavigate();
   const { favorites, addProductToFavorite } = useFavoritesActions();
+  const { addProduct } = useCartActions();
 
   const isfavorite = favorites.some((prod: Product) => prod.id === product.id);
 
@@ -34,6 +36,10 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
     const productTitle = formatTitle(product.title);
 
     navigate(`/product-details/${product.id}/${productTitle}`);
+  };
+
+  const handleAddToCartClick = () => {
+    addProduct(product);
   };
 
   return (
@@ -92,7 +98,7 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
               variant="body2"
               sx={{ textDecoration: 'line-through', color: 'gray' }}
             >
-              ${product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </Typography>
           )}
         </Box>
@@ -128,7 +134,11 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
         </Box>
 
         {/* Add to Cart Button */}
-        <Button variant="outlined" sx={{ mt: 2, borderRadius: 30 }}>
+        <Button
+          variant="outlined"
+          sx={{ mt: 2, borderRadius: 30 }}
+          onClick={handleAddToCartClick}
+        >
           Add to Cart
         </Button>
       </CardContent>
