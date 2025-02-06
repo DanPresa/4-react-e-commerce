@@ -32,6 +32,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigation = useNavigate();
   const isProductPage = useMatch('/');
+  const isThereFavorites = favorites.length > 0;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,8 +45,6 @@ const Navbar = () => {
   const handleGotToFavoritesClick = () => {
     navigation('/favorites');
   };
-
-  const isThereFavorites = favorites.length > 0;
 
   // Handle category selection
   const handleCategorySelect = (category: Category) => {
