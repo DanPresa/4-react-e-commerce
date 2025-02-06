@@ -30,8 +30,8 @@ const Navbar = () => {
   const { products } = useCartActions();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isHome = useMatch('/');
   const navigation = useNavigate();
+  const isProduct = useMatch('/');
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,10 +71,10 @@ const Navbar = () => {
       <Toolbar
         sx={{
           display: 'flex',
-          justifyContent: isHome ? 'space-between' : 'flex-end',
+          justifyContent: isProduct ? 'space-between' : 'flex-end',
         }}
       >
-        {isHome && (
+        {isProduct && (
           <>
             <Button
               onClick={handleMenuOpen}
