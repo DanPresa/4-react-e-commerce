@@ -31,7 +31,7 @@ const Navbar = () => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigation = useNavigate();
-  const isProduct = useMatch('/');
+  const isProductPage = useMatch('/');
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,10 +71,10 @@ const Navbar = () => {
       <Toolbar
         sx={{
           display: 'flex',
-          justifyContent: isProduct ? 'space-between' : 'flex-end',
+          justifyContent: isProductPage ? 'space-between' : 'flex-end',
         }}
       >
-        {isProduct && (
+        {isProductPage && (
           <>
             <Button
               onClick={handleMenuOpen}
