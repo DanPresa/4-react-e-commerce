@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 const initialState: ProductsState = {
@@ -19,7 +19,7 @@ const productSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    setProducts: (state, action) => {
+    setProducts: (state, action: PayloadAction<ProductData>) => {
       const { products, total, skip, limit } = action.payload;
 
       state.loading = false;
@@ -28,11 +28,11 @@ const productSlice = createSlice({
       state.skip = skip;
       state.limit = limit;
     },
-    setProduct: (state, action) => {
+    setProduct: (state, action: PayloadAction<Product>) => {
       state.loading = false;
       state.product = action.payload;
     },
-    setError: (state, action) => {
+    setError: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },

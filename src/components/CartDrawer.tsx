@@ -13,7 +13,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { ShoppingBag, Close, Add, Remove } from '@mui/icons-material';
-import { formatPrice } from '../utils/formatCategories';
+import { formatPrice } from '../utils/formatPrice';
 
 const CartDrawer = () => {
   const {

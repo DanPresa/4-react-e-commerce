@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import useCartActions from '../../redux/cart/useCartActions';
-import { formatPrice } from '../../utils/formatCategories';
+import { formatPrice } from '../../utils/formatPrice';
 import {
   Box,
   Typography,

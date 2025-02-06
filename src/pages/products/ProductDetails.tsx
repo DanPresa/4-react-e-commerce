@@ -19,7 +19,7 @@ import {
   Replay,
 } from '@mui/icons-material';
 import Rating from '@mui/material/Rating';
-import { formatPrice, pricePerMonth } from '../../utils/formatCategories';
+import { formatPrice, pricePerMonth } from '../../utils/formatPrice';
 import useCartActions from '../../redux/cart/useCartActions';
 
 const ProductDetails = () => {

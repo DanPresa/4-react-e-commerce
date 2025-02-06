@@ -2,7 +2,8 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router';
 import useFavoritesActions from '../../redux/favorites/useFavoritesActions';
 import useCartActions from '../../redux/cart/useCartActions';
-import { formatPrice, formatTitle } from '../../utils/formatCategories';
+import { formatTitle } from '../../utils/categories';
+import { formatPrice } from '../../utils/formatPrice';
 import {
   Card,
   CardMedia,
