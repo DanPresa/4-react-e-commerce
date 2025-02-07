@@ -46,16 +46,28 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
   return (
     <Card
       sx={{
-        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'space-between',
+        position: 'relative',
+        overflow: 'visible',
         boxShadow: 1,
         borderRadius: 2,
-        position: 'relative',
         '&:hover': { boxShadow: 3 },
       }}
     >
       {/* Wishlist Icon */}
       <IconButton
-        sx={{ position: 'absolute', top: 10, right: 10 }}
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          zIndex: 10,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          boxShadow: 1,
+          '&:hover': { backgroundColor: 'rgba(255, 255, 255, 1)' },
+        }}
         onClick={handleAddToFavoritesClick}
       >
         {isfavorite ? <Favorite color="error" /> : <FavoriteBorder />}

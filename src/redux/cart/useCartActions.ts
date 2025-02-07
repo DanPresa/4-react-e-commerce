@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../hooks';
+
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { cartSelector, setToggleDrawer } from './cart.slice';
 import {
   addProductToCart,
@@ -10,7 +10,7 @@ import {
 
 const useCartActions = () => {
   const dispatch = useAppDispatch();
-  const { products, openDrawer } = useSelector(cartSelector);
+  const { products, openDrawer } = useAppSelector(cartSelector);
 
   const addProduct = useCallback(
     (product: Product, amount?: number) => {
@@ -34,8 +34,8 @@ const useCartActions = () => {
   );
 
   const toggleDrawer = useCallback(() => {
-    dispatch(setToggleDrawer(!openDrawer));
-  }, [openDrawer, dispatch]);
+    dispatch(setToggleDrawer());
+  }, [dispatch]);
 
   return {
     products,

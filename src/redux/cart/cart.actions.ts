@@ -19,7 +19,7 @@ export const addProductToCart =
       dispatch(updateProductQuantity(product, 1));
     }
 
-    dispatch(setToggleDrawer(true));
+    dispatch(setToggleDrawer());
   };
 
 export const updateProductQuantity =

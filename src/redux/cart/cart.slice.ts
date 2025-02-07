@@ -13,8 +13,8 @@ const cartSlice = createSlice({
     setProducts: (state, action: PayloadAction<Product[]>) => {
       state.products = action.payload;
     },
-    setToggleDrawer: (state, action: PayloadAction<boolean>) => {
-      state.openDrawer = action.payload;
+    setToggleDrawer: (state) => {
+      state.openDrawer = !state.openDrawer;
     },
   },
 });
