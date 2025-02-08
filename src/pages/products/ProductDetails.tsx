@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useProductsActions from '../../redux/products/useProductsActions';
+import useCartActions from '../../redux/cart/useCartActions';
 import {
   Box,
   Typography,
@@ -20,12 +21,17 @@ import {
 } from '@mui/icons-material';
 import Rating from '@mui/material/Rating';
 import { formatPrice, pricePerMonth } from '../../utils/formatPrice';
-import useCartActions from '../../redux/cart/useCartActions';
 
 const ProductDetails = () => {
-  const { product, fetchProductById } = useProductsActions();
+  const {
+    product,
+    selectedImage,
+    fetchProductById,
+    selectImage,
+    resetProduct,
+  } = useProductsActions();
   const { addProduct, changeProductQuantity } = useCartActions();
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const [quantity, setQuantity] = useState(1);
 
   const navigate = useNavigate();
@@ -43,11 +49,19 @@ const ProductDetails = () => {
     setQuantity(amount);
   };
 
+  const handleChangeImageClick = (image: string) => {
+    selectImage(image);
+  };
+
   useEffect(() => {
     if (!productId) return;
 
     fetchProductById(productId);
-  }, [productId, fetchProductById]);
+
+    return () => {
+      resetProduct();
+    };
+  }, [productId, fetchProductById, resetProduct]);
 
   if (!product) {
     return <Typography>Loading...</Typography>;
@@ -91,7 +105,7 @@ const ProductDetails = () => {
                     border: selectedImage === image ? '2px solid #000' : 'none',
                     transition: '0.3s',
                   }}
-                  onClick={() => setSelectedImage(image)}
+                  onClick={() => handleChangeImageClick(image)}
                 >
                   <CardMedia component="img" image={image} alt="Thumbnail" />
                 </Card>

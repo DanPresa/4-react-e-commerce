@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { productsSelector } from './products.slice';
+import {
+  productsSelector,
+  setResetProduct,
+  setSelectedImage,
+} from './products.slice';
 import {
   getAllProducts,
   getProductById,
@@ -9,7 +13,7 @@ import {
 
 const useProductsActions = () => {
   const dispatch = useAppDispatch();
-  const { loading, products, product, error } =
+  const { loading, products, product, selectedImage, error } =
     useAppSelector(productsSelector);
 
   const fetchAllProducts = useCallback(() => {
@@ -30,14 +34,28 @@ const useProductsActions = () => {
     [dispatch]
   );
 
+  const selectImage = useCallback(
+    (image: string) => {
+      dispatch(setSelectedImage(image));
+    },
+    [dispatch]
+  );
+
+  const resetProduct = useCallback(() => {
+    dispatch(setResetProduct());
+  }, [dispatch]);
+
   return {
     loading,
     products,
     product,
+    selectedImage,
     error,
     fetchAllProducts,
     fetchProductsByCategory,
     fetchProductById,
+    selectImage,
+    resetProduct,
   };
 };
 

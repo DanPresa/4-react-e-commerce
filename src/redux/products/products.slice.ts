@@ -5,6 +5,7 @@ const initialState: ProductsState = {
   loading: false,
   products: [],
   product: null,
+  selectedImage: null,
   total: 0,
   skip: 0,
   limit: 0,
@@ -32,6 +33,13 @@ const productSlice = createSlice({
       state.loading = false;
       state.product = action.payload;
     },
+    setSelectedImage: (state, action: PayloadAction<string>) => {
+      state.selectedImage = action.payload;
+    },
+    setResetProduct: (state) => {
+      state.product = null;
+      state.selectedImage = null;
+    },
     setError: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
@@ -40,6 +48,12 @@ const productSlice = createSlice({
 });
 
 export const productsSelector = (state: RootState) => state.products;
-export const { setLoading, setProducts, setProduct, setError } =
-  productSlice.actions;
+export const {
+  setLoading,
+  setProducts,
+  setProduct,
+  setSelectedImage,
+  setResetProduct,
+  setError,
+} = productSlice.actions;
 export default productSlice.reducer;

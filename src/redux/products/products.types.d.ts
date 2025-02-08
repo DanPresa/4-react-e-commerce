@@ -58,5 +58,6 @@ interface ProductsState extends ProductWithTotal {
   loading: boolean;
   products: Product[];
   product: Product | null;
+  selectedImage: string | null;
   error: string | null;
 }
