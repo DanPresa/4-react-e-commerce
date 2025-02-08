@@ -6,17 +6,19 @@ import Grid from '@mui/material/Grid2';
 import ProductCard from './ProducCard';
 
 const ProductPage = () => {
+  console.log('ProductPage rendered');
   const { selectedCategory } = useCategoryActions();
-  const { loading, products, fetchAllProducts, fetchProductsByCategory } =
+  const { loading, products, getAllProducts, getProductsByCategory } =
     useProductsActions();
 
   useEffect(() => {
     if (selectedCategory) {
-      fetchProductsByCategory(selectedCategory);
+      getProductsByCategory(selectedCategory);
     } else {
-      fetchAllProducts();
+      getAllProducts();
     }
-  }, [selectedCategory, fetchAllProducts, fetchProductsByCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
 
   if (loading) {
     return <Box>Loading products...</Box>;

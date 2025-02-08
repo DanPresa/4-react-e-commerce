@@ -1,35 +1,75 @@
 import { useCallback } from 'react';
+import axiosInstance from '../../config/api/axiosInstance';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import {
   productsSelector,
+  setError,
+  setLoading,
+  setProduct,
+  setProducts,
   setResetProduct,
   setSelectedImage,
 } from './products.slice';
-import {
-  getAllProducts,
-  getProductById,
-  getProductsByCategory,
-} from './products.actions';
 
 const useProductsActions = () => {
   const dispatch = useAppDispatch();
   const { loading, products, product, selectedImage, error } =
     useAppSelector(productsSelector);
 
-  const fetchAllProducts = useCallback(() => {
-    dispatch(getAllProducts());
+  const getAllProducts = useCallback(async () => {
+    dispatch(setLoading());
+
+    try {
+      const { data } = await axiosInstance.get<ProductData>('/products');
+
+      dispatch(setProducts(data));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setError(error.message));
+      } else {
+        dispatch(setError('An error occurred'));
+      }
+    }
   }, [dispatch]);
 
-  const fetchProductsByCategory = useCallback(
-    (slug: string) => {
-      dispatch(getProductsByCategory(slug));
+  const getProductsByCategory = useCallback(
+    async (category: string) => {
+      dispatch(setLoading());
+
+      try {
+        const { data } = await axiosInstance.get<ProductData>(
+          `/products/category/${category}`
+        );
+
+        dispatch(setProducts(data));
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(setError(error.message));
+        } else {
+          dispatch(setError('An error occurred'));
+        }
+      }
     },
     [dispatch]
   );
 
-  const fetchProductById = useCallback(
-    (productId: string) => {
-      dispatch(getProductById(productId));
+  const getProductById = useCallback(
+    async (product: Product) => {
+      dispatch(setLoading());
+
+      const { id } = product;
+
+      try {
+        const { data } = await axiosInstance.get<Product>(`/products/${id}`);
+
+        dispatch(setProduct(data));
+      } catch (error) {
+        if (error instanceof Error) {
+          dispatch(setError(error.message));
+        } else {
+          dispatch(setError('An error occurred'));
+        }
+      }
     },
     [dispatch]
   );
@@ -51,9 +91,9 @@ const useProductsActions = () => {
     product,
     selectedImage,
     error,
-    fetchAllProducts,
-    fetchProductsByCategory,
-    fetchProductById,
+    getAllProducts,
+    getProductsByCategory,
+    getProductById,
     selectImage,
     resetProduct,
   };
