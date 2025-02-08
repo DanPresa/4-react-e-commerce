@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import useFavoritesActions from '../../redux/favorites/useFavoritesActions';
 import useCartActions from '../../redux/cart/useCartActions';
@@ -22,26 +22,30 @@ interface ProductProps {
 }
 
 // Reusable Product Card Component
-const ProductCard: FC<ProductProps> = ({ product }) => {
+const ProductCard: FC<ProductProps> = memo(({ product }) => {
+  console.log(`ProductCard rendered`);
   const navigate = useNavigate();
   const { favorites, addProductToFavorite } = useFavoritesActions();
   const { addProduct } = useCartActions();
 
-  const isfavorite = favorites.some((prod: Product) => prod.id === product.id);
+  const isfavorite = useMemo(
+    () => favorites.some((prod: Product) => prod.id === product.id),
+    [product.id, favorites]
+  );
 
-  const handleAddToFavoritesClick = () => {
+  const handleAddToFavoritesClick = useCallback(() => {
     addProductToFavorite(product);
-  };
+  }, [product, addProductToFavorite]);
 
-  const handleProductDetailsClick = () => {
+  const handleProductDetailsClick = useCallback(() => {
     const productTitle = formatTitle(product.title);
 
     navigate(`/product-details/${product.id}/${productTitle}`);
-  };
+  }, [product, navigate]);
 
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = useCallback(() => {
     addProduct(product);
-  };
+  }, [product, addProduct]);
 
   return (
     <Card
@@ -157,6 +161,6 @@ const ProductCard: FC<ProductProps> = ({ product }) => {
       </CardContent>
     </Card>
   );
-};
+});
 
 export default ProductCard;

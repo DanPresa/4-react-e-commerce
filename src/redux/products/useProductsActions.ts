@@ -54,13 +54,13 @@ const useProductsActions = () => {
   );
 
   const getProductById = useCallback(
-    async (product: Product) => {
+    async (productId: string) => {
       dispatch(setLoading());
 
-      const { id } = product;
-
       try {
-        const { data } = await axiosInstance.get<Product>(`/products/${id}`);
+        const { data } = await axiosInstance.get<Product>(
+          `/products/${productId}`
+        );
 
         dispatch(setProduct(data));
       } catch (error) {

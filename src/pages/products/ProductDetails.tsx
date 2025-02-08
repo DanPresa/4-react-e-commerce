@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useProductsActions from '../../redux/products/useProductsActions';
 import useCartActions from '../../redux/cart/useCartActions';
@@ -23,23 +23,33 @@ import Rating from '@mui/material/Rating';
 import { formatPrice, pricePerMonth } from '../../utils/formatPrice';
 
 const ProductDetails = () => {
-  const {
-    product,
-    selectedImage,
-    fetchProductById,
-    selectImage,
-    resetProduct,
-  } = useProductsActions();
+  console.log('ProductDetails rendered');
+  const { product, selectedImage, getProductById, selectImage, resetProduct } =
+    useProductsActions();
   const { addProduct, changeProductQuantity } = useCartActions();
-
   const [quantity, setQuantity] = useState(1);
+
+  // Memoize derived values
+  const productPrice = useMemo(() => product?.price || 0, [product]);
+
+  const formattedPrice = useMemo(
+    () => formatPrice(productPrice),
+    [productPrice]
+  );
+  const monthlyPrice = useMemo(
+    () => pricePerMonth(productPrice, 12),
+    [productPrice]
+  );
 
   const navigate = useNavigate();
   const { productId } = useParams();
 
-  const handleAddProductToCartClick = (product: Product) => {
-    addProduct(product, quantity);
-  };
+  const handleAddProductToCartClick = useCallback(
+    (product: Product) => {
+      addProduct(product, quantity);
+    },
+    [quantity, addProduct]
+  );
 
   const handleUpdateProductQuantityClick = (
     product: Product,
@@ -56,12 +66,12 @@ const ProductDetails = () => {
   useEffect(() => {
     if (!productId) return;
 
-    fetchProductById(productId);
+    getProductById(productId);
 
     return () => {
       resetProduct();
     };
-  }, [productId, fetchProductById, resetProduct]);
+  }, [productId, getProductById, resetProduct]);
 
   if (!product) {
     return <Typography>Loading...</Typography>;
@@ -133,9 +143,9 @@ const ProductDetails = () => {
 
           {/* Price */}
           <Typography variant="h5" sx={{ mt: 2 }}>
-            {formatPrice(product.price)}{' '}
+            {formattedPrice}{' '}
             <Typography component="span" variant="body2" color="text.secondary">
-              or ${pricePerMonth(product.price, 12)}/month
+              or ${monthlyPrice}/month
             </Typography>
           </Typography>
           <Typography variant="body2" color="text.secondary">
